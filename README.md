@@ -1,6 +1,6 @@
 # AWS SAM Project
 
-![Alt text](assets/images/architecture.png?raw=true "Architecture")
+![Alt text](basic-crud\assets\images\architecture.png?raw=true "Architecture")
 
 This project contains source code and supporting files for a basic CRUD serverless application that you can deploy with the AWS Serverless Application Model (AWS SAM) command line interface (CLI). It includes the following files and folders:
 
