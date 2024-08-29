@@ -30,7 +30,7 @@ Parameters:
     Default: "GitHub"
   FullRepositoryId:
     Type: String
-    Default: "Geethbeena/AWS-Projects.git"
+    Default: "Geethbeena/AWS-Projects"
   MainGitBranch:
     Type: String
     Default: "main"
