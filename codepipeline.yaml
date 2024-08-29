@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion : '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   This template deploys a CodePipeline with its required resources.
 
@@ -12,7 +12,6 @@ Description: >
 
   **WARNING** You will be billed for the AWS resources used if you create a stack from this template.
 
-
 # To deploy this template and connect to the main git branch, run this against the leading account:
 # `sam deploy -t codepipeline.yaml --stack-name <stack-name> --capabilities=CAPABILITY_IAM`.
 # After creating the stack, the CodeStar Connection is in PENDING status by default. You must complete
@@ -25,14 +24,13 @@ Description: >
 #   --parameter-overrides="FeatureGitBranch=<branch-name> CodeStarConnectionArn=<codestar-connection-arn>"
 # ```
 
-
 Parameters:
   GitProviderType:
     Type: String
     Default: "GitHub"
   FullRepositoryId:
     Type: String
-    Default: "https://github.com/Geethbeena/AWS-Projects.git"
+    Default: "Geethbeena/AWS-Projects.git"
   MainGitBranch:
     Type: String
     Default: "main"
@@ -131,9 +129,19 @@ Resources:
                 Provider: CodeStarSourceConnection
                 Version: "1"
               Configuration:
-                ConnectionArn: !If [CreateConnection, !Ref CodeStarConnection, !Ref CodeStarConnectionArn]
+                ConnectionArn:
+                  !If [
+                    CreateConnection,
+                    !Ref CodeStarConnection,
+                    !Ref CodeStarConnectionArn,
+                  ]
                 FullRepositoryId: !Ref FullRepositoryId
-                BranchName: !If [IsFeatureBranchPipeline, !Ref FeatureGitBranch, !Ref MainGitBranch]
+                BranchName:
+                  !If [
+                    IsFeatureBranchPipeline,
+                    !Ref FeatureGitBranch,
+                    !Ref MainGitBranch,
+                  ]
               OutputArtifacts:
                 - Name: SourceCodeAsZip
               RunOrder: 1
@@ -305,8 +313,7 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
       LoggingConfiguration:
-        DestinationBucketName:
-          !Ref PipelineArtifactsLoggingBucket
+        DestinationBucketName: !Ref PipelineArtifactsLoggingBucket
         LogFilePrefix: "artifacts-logs"
       BucketEncryption:
         ServerSideEncryptionConfiguration:
@@ -323,7 +330,7 @@ Resources:
             Action: "s3:*"
             Principal: "*"
             Resource:
-              - !Sub  "${PipelineArtifactsBucket.Arn}/*"
+              - !Sub "${PipelineArtifactsBucket.Arn}/*"
               - !GetAtt PipelineArtifactsBucket.Arn
             Condition:
               Bool:
@@ -346,7 +353,7 @@ Resources:
       AccessControl: "LogDeliveryWrite"
       OwnershipControls:
         Rules:
-          - ObjectOwnership:  ObjectWriter
+          - ObjectOwnership: ObjectWriter
       VersioningConfiguration:
         Status: Enabled
       BucketEncryption:
@@ -398,7 +405,12 @@ Resources:
               - Effect: Allow
                 Action:
                   - "codestar-connections:UseConnection"
-                Resource: !If [CreateConnection, !Ref CodeStarConnection, !Ref CodeStarConnectionArn]
+                Resource:
+                  !If [
+                    CreateConnection,
+                    !Ref CodeStarConnection,
+                    !Ref CodeStarConnectionArn,
+                  ]
         - PolicyName: CodePipelineCodeAndS3Bucket
           PolicyDocument:
             Version: "2012-10-17"
@@ -480,8 +492,8 @@ Resources:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
-                Action: '*'
-                Resource: '*'
+                Action: "*"
+                Resource: "*"
 
   #   ____          _      ____        _ _     _
   #  / ___|___   __| | ___| __ ) _   _(_| | __| |
